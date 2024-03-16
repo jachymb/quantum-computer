@@ -124,20 +124,17 @@ class ControlledGate(QuantumGate):
             raise ValueError("Base gate cannot be at the same position as control qubit.")
 
     def matrix_representation(self) -> np.ndarray:
-        n = self._size ** 2
-        uncontrolled_gate = TensorProductGate(
+        m = TensorProductGate(
             IdentityGate(self.at_qubit),
             self.base_gate,
-            IdentityGate(self._size-self.at_qubit-1)
-        )
-        print(uncontrolled_gate.size)
-        m = np.zeros((n, n), dtype=_complex)
-        for i, a in enumerate(bits.all_values(self._size)):
-            if a[self.controlled_by]:
-                m[i] = uncontrolled_gate(QubitArray.from_bits(*a)).vector_representation
-            else:
-                m[i] = QubitArray.from_bits(*a).vector_representation
-        return m
+            IdentityGate(self._size - self.at_qubit - 1)
+        ).matrix_representation()
+        return np.array([
+                m @ (QubitArray.from_bits(*a)).vector_representation
+                if a[self.controlled_by] else
+                QubitArray.from_bits(*a).vector_representation
+                for i, a in enumerate(bits.all_values(self._size))
+        ])
 
 
 class Oracle(QuantumGate):
