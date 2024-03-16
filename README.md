@@ -7,6 +7,8 @@ The code is designed as a re-usable library.
 But if you've ever wondered whether the boolean function `f(x)=1` is constant and needed to compute the answer really quickly using a quantum computer,
 but actually very slowly because of emulation, the famous Deutsch-Jozsa algorithm is implemented using this framework.
 
+Cool video explaing the homemade hardware implementation for this: https://www.youtube.com/watch?v=tHfGucHtLqo
+
 I guess it could be used for educational purposes, idk?
 
 ```python
