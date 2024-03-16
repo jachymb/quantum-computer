@@ -11,7 +11,7 @@ from qubits import QubitArray
 
 class DeutschOracle(BooleanReversibleGate):
     def __init__(self, f: Callable[[bool], bool]):
-        super().__init__(2, lambda x: (x[0], x[1] is not f(x[0])))
+        super().__init__(2, lambda x: (x[0], x[1] ^ f(x[0])))
 
 
 def deutsh_algorithm(f):
