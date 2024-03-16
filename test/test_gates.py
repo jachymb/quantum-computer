@@ -34,18 +34,18 @@ class TestQubit(unittest.TestCase):
 
     def test_boolean_reversible(self):
         self.assertEqual(
-            BooleanReversible(1, lambda x: x),
+            BooleanReversibleGate(1, lambda x: x),
             IdentityGate(1)
         )
         np.testing.assert_array_equal(
-            BooleanReversible(1, lambda x: [not x[0]]).matrix_representation(),
+            BooleanReversibleGate(1, lambda x: [not x[0]]).matrix_representation(),
             np.array([
                 [0, 1],
                 [1, 0]
             ])
         )
         with self.assertRaises(ValueError):
-            BooleanReversible(1, lambda x: [False])
+            BooleanReversibleGate(1, lambda x: [False])
 
     def test_tensor_product_gate(self):
         np.testing.assert_array_equal(

@@ -75,7 +75,7 @@ class HadamardGate(QuantumGate):
         return scipy.linalg.hadamard(2 ** self._size, dtype=_complex) / normalization
 
 
-class BooleanReversible(QuantumGate):
+class BooleanReversibleGate(QuantumGate):
     """
     Converts a function f: {False, True}ⁿ → {False, True}ⁿ to the corresponding quantum gate.
     The function must be a permutation (a.k.a. reversible).
@@ -107,31 +107,31 @@ class BooleanReversible(QuantumGate):
 class ControlledGate(QuantumGate):
     def __init__(self, size: int, base_gate: QuantumGate, at_qubit: int, controlled_by: int):
         super().__init__(size)
-        self.base_gate = base_gate
-        self.at_qubit = at_qubit
-        self.controlled_by = controlled_by
+        self._base_gate = base_gate
+        self._at_qubit = at_qubit
+        self._controlled_by = controlled_by
 
         if base_gate.size != 1:
             raise NotImplementedError("Only single qubit controlled gates are supported.")
 
-        if not 0 <= controlled_by < self._size:
+        elif not 0 <= controlled_by < self._size:
             raise ValueError("Invalid base gate qubit.")
 
-        if not 0 <= controlled_by < self._size:
+        elif not 0 <= controlled_by < self._size:
             raise ValueError("Invalid number of control qubit.")
 
-        if controlled_by == at_qubit:
+        elif controlled_by == at_qubit:
             raise ValueError("Base gate cannot be at the same position as control qubit.")
 
     def matrix_representation(self) -> np.ndarray:
         m = TensorProductGate(
-            IdentityGate(self.at_qubit),
-            self.base_gate,
-            IdentityGate(self._size - self.at_qubit - 1)
+            IdentityGate(self._at_qubit),
+            self._base_gate,
+            IdentityGate(self._size - self._at_qubit - 1)
         ).matrix_representation()  # the same gate but uncontrolled. Precomputed for efficiency
         return np.array([
                 m @ QubitArray.from_bits(*a).vector_representation
-                if a[self.controlled_by] else
+                if a[self._controlled_by] else
                 QubitArray.from_bits(*a).vector_representation
                 for i, a in enumerate(bits.all_values(self._size))
         ])

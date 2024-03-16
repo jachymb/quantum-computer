@@ -5,23 +5,13 @@ from typing import Callable
 
 import numpy as np
 from _representation import _complex
-from gates import QuantumGate, Circuit, HadamardGate, TensorProductGate, IdentityGate
+from gates import QuantumGate, Circuit, HadamardGate, TensorProductGate, IdentityGate, BooleanReversibleGate
 from qubits import QubitArray
 
 
-class DeutschOracle(QuantumGate):
+class DeutschOracle(BooleanReversibleGate):
     def __init__(self, f: Callable[[bool], bool]):
-        super().__init__(2)
-        self.f = f
-
-    def matrix_representation(self) -> np.ndarray:
-        f = self.f
-        return np.array([
-            [False is f(False), False is (f(False) ^ True), 0, 0],
-            [True is f(False), True is (f(False) ^ True), 0, 0],
-            [0, 0, False is f(True), False is (f(True) ^ True)],
-            [0, 0, True is f(True), True is (f(True) ^ True)],
-        ], dtype=_complex)
+        super().__init__(2, lambda x: (x[0], x[1] is not f(x[0])))
 
 
 def deutsh_algorithm(f):

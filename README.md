@@ -12,15 +12,25 @@ Cool video explaing the homemade hardware implementation for this: https://www.y
 I guess it could be used for educational purposes, idk?
 
 ```python
+from gates import BooleanReversibleGate, Circuit, HadamardGate, TensorProductGate, IdentityGate
+from qubits import QubitArray
+from typing import Callable
+
+
+class DeutschOracle(BooleanReversibleGate):
+    def __init__(self, f: Callable[[bool], bool]):
+        super().__init__(2, lambda x: (x[0], x[1] is not f(x[0])))
+
+
 def deutsh_algorithm(f):
     circuit = Circuit(  # lazy declaration
         HadamardGate(2),
         DeutschOracle(f),
         TensorProductGate(HadamardGate(1), IdentityGate(1))
     )
-    input = QubitArray.from_bits(0, 1)
-    
-    final_pure_state = circuit(input)  # Actual emulation happens here
+    input_qubits = QubitArray.from_bits(0, 1)
+
+    final_pure_state = circuit(input_qubits)  # Actual emulation happens here
     return final_pure_state.born_rule()  # Get probabilities of observations
 
 
