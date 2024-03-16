@@ -23,14 +23,14 @@ class QubitArray:
 
         self._n = int(np.log2(len(vector_representation)))
 
-
     def _validate(self):
         n = len(self._vector_representation)
 
         if not bits.is_power_of_two(n):
             raise ValueError(f"Representation array length {n} is not a power of two!")
         elif not matrix_properties.is_normalized(self._vector_representation):
-            raise ValueError(f"Vector {self._vector_representation} is not normalized. Norm = {np.linalg.norm(self._vector_representation)}")
+            raise ValueError(
+                f"Vector {self._vector_representation} is not normalized. Norm = {np.linalg.norm(self._vector_representation)}")
 
     @property
     def n(self) -> int:
@@ -84,8 +84,7 @@ class QubitArray:
         return cls.from_tensor_product(*map(cls.from_bit, bits))
 
     def born_rule(self):
-        return np.abs(self._vector_representation)**2
-
+        return np.abs(self._vector_representation) ** 2
 
     def __eq__(self, other: Self) -> bool:
         return np.array_equal(self._vector_representation, other._vector_representation)
@@ -97,4 +96,3 @@ ket00 = QubitArray.from_bits(0, 0)
 ket01 = QubitArray.from_bits(0, 1)
 ket10 = QubitArray.from_bits(1, 0)
 ket11 = QubitArray.from_bits(1, 1)
-

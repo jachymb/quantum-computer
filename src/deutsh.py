@@ -31,10 +31,3 @@ def deutsh_algorithm(f):
         TensorProductGate(HadamardGate(1), IdentityGate(1))
     )
     return c(QubitArray.from_bits(0, 1)).born_rule()
-
-
-if __name__ == "__main__":
-    print(deutsh_algorithm(lambda x: False))
-    print(deutsh_algorithm(lambda x: True))
-    print(deutsh_algorithm(lambda x: x))
-    print(deutsh_algorithm(lambda x: not x))
