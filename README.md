@@ -4,7 +4,7 @@ It is kind of similar to QisKit but less powerful, so if you want to do somethin
 
 The code is designed as a re-usable and extensible OOP/lazy-evaluation library.
 
-But if you've ever wondered whether the black-box boolean function $f: \{0,1\} \to \{0, 1\}$ is constant and needed to compute the answer really quickly using a quantum computer,
+But if you've ever wondered whether the black-box boolean function $f: \left{0,1\right} \to \{0, 1\}$ is constant and needed to compute the answer really quickly using a quantum computer,
 but actually very slowly because of emulation!? The famous Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem.
 
 Cool video explaing the homemade hardware implementation for this: https://www.youtube.com/watch?v=tHfGucHtLqo
