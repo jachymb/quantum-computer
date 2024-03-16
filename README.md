@@ -13,13 +13,15 @@ I guess it could be used for educational purposes, idk?
 
 ```python
 def deutsh_algorithm(f):
-    circuit = Circuit(
+    circuit = Circuit(  # lazy declaration
         HadamardGate(2),
         DeutschOracle(f),
         TensorProductGate(HadamardGate(1), IdentityGate(1))
     )
     input = QubitArray.from_bits(0, 1)
-    return circuit(input).born_rule()
+    
+    final_pure_state = circuit(input)  # Actual emulation happens here
+    return final_pure_state.born_rule()  # Get probabilities of observations
 
 
 if __name__ == "__main__":
