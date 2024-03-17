@@ -18,11 +18,11 @@ from typing import Callable, Collection
 
 
 class DeutschOracle(BooleanReversibleGate):
-    def __init__(self, f):
+    def __init__(self, f: Callable[[bool], bool]):
         super().__init__(2, lambda x: (x[0], x[1] ^ f(x[0])))
 
 
-def deutsh_algorithm(f) -> Collection[float]:
+def deutsh_algorithm(f: Callable[[bool], bool]) -> Collection[float]:
     circuit = Circuit(  # lazy declaration
         HadamardGate(2),
         DeutschOracle(f),
@@ -49,5 +49,5 @@ The quantum algorithm will differentiate the balanced and the constant boolean f
 [  0,   0,  0.5, 0.5]
 [  0,   0,  0.5, 0.5]
 ```
-These probabilities correspond to the observations of $|00\rangle |01\rangle |10\rangle |11\rangle$ respectively. 
+These probabilities correspond to the observations of $|00\rangle, |01\rangle, |10\rangle$ and $|11\rangle$ respectively. 
 Only the first bit is relevant. 
