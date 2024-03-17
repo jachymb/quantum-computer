@@ -109,3 +109,15 @@ class TestQubit(unittest.TestCase):
             x.matrix_representation(),
             PauliX().matrix_representation()
         )
+
+    def test_oracle(self):
+        half_swap = Oracle([
+            [1, 0, 0, 0],
+            [0, 0.5 + 0.5j, 0.5 - 0.5j, 0],
+            [0, 0.5 - 0.5j, 0.5 + 0.5j, 0],
+            [0, 0, 0, 1]
+        ])
+        swap_gate1 = BooleanReversibleGate(lambda x, y: (y, x))
+        swap_gate2 = Circuit(half_swap, half_swap)
+        self.assertEqual(swap_gate1, swap_gate2)
+

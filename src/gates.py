@@ -180,8 +180,8 @@ class Oracle(QuantumGate):
     A gate represented by an arbitrary unitary transformation.
     """
 
-    def __init__(self, matrix: np.ndarray, validate=True):
-        self._matrix = matrix
+    def __init__(self, matrix: np.typing.ArrayLike, validate=True):
+        self._matrix = np.array(matrix, dtype=_complex)
 
         if validate:
             self._validate()

@@ -56,13 +56,19 @@ Only the first bit is relevant.
 
 Cool video explaing the homemade hardware implementation for this: https://www.youtube.com/watch?v=tHfGucHtLqo
 
-The gates API should be flexible enough to build various gates from the primitives:
+The gates API should be flexible enough to build various gates from the primitives. For example:
 ```python
-from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, PhaseShiftGate 
+from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, PhaseShiftGate, Oracle 
 from math import pi
 
 cnot = ControlledGate(2, PauliX(), at_qubit=1, controlled_by=0)
 toffoli = ControlledGate(3, cnot, at_qubit=1, controlled_by=0)
 swap = BooleanReversibleGate(lambda x, y: (y, x))
 sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-pi/2), HadamardGate(1))
+sqrt_swap = Oracle([
+    [1, 0,        0,        0],
+    [0, 0.5+0.5j, 0.5-0.5j, 0],
+    [0, 0.5-0.5j, 0.5+0.5j, 0],
+    [0, 0,        0,        1]
+])
 ```
