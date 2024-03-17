@@ -11,6 +11,10 @@ Cool video explaing the homemade hardware implementation for this: https://www.y
 
 I guess it could be used for educational purposes, idk?
 
+The Deutsch-Jozsa quantum circuit:
+![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
+
+That can be implemented (here for simplicity $n=1$ but can be easily generalized) as the following code: 
 ```python
 from gates import BooleanReversibleGate, HadamardGate, TensorProductGate, IdentityGate, Circuit
 from qubits import QubitArray
@@ -19,7 +23,7 @@ from typing import Callable, Collection
 
 class DeutschOracle(BooleanReversibleGate):
     def __init__(self, f: Callable[[bool], bool]):
-        super().__init__(2, lambda x: (x[0], x[1] ^ f(x[0])))
+        super().__init__(lambda x, y: (x, y ^ f(x)))
 
 
 def deutsh_algorithm(f: Callable[[bool], bool]) -> Collection[float]:
@@ -62,5 +66,3 @@ toffoli = ControlledGate(3, cnot, at_qubit=1, controlled_by=0)
 swap = BooleanReversibleGate(lambda x, y: (y, x))
 sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-pi/2), HadamardGate(1))
 ```
-
-![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
