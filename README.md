@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print(deutsh_algorithm(lambda x: not x))  # balanced
 ```
 
-The quantum algorithm will differentiate the balanced and the constant boolean functions using a single pass, something that is impossible on a classical computer. The output from the blovk above is:
+The quantum algorithm will differentiate the balanced and the constant boolean functions using a single pass, something that is impossible on a classical computer. The output from the block above is:
 
 ```
 [0.5, 0.5,    0,   0]
