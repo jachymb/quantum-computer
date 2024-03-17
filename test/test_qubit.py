@@ -19,24 +19,24 @@ class TestQubit(unittest.TestCase):
         self.assertEqual(QubitArray.from_bit(True), QubitArray.from_bit(1))
 
     def test_from_bits(self):
-        self.assertEqual(QubitArray.from_bits(0, 0), QubitArray([1, 0, 0, 0]))
+        self.assertEqual(QubitArray.from_bits((0, 0)), QubitArray([1, 0, 0, 0]))
 
-        self.assertEqual(QubitArray.from_bits(0, 0), QubitArray([1, 0, 0, 0]))
-        self.assertEqual(QubitArray.from_bits(0, 1), QubitArray([0, 1, 0, 0]))
-        self.assertEqual(QubitArray.from_bits(1, 0), QubitArray([0, 0, 1, 0]))
-        self.assertEqual(QubitArray.from_bits(1, 1), QubitArray([0, 0, 0, 1]))
+        self.assertEqual(QubitArray.from_bits((0, 0)), QubitArray([1, 0, 0, 0]))
+        self.assertEqual(QubitArray.from_bits((0, 1)), QubitArray([0, 1, 0, 0]))
+        self.assertEqual(QubitArray.from_bits((1, 0)), QubitArray([0, 0, 1, 0]))
+        self.assertEqual(QubitArray.from_bits((1, 1)), QubitArray([0, 0, 0, 1]))
 
     def test_tensor_product(self):
         self.assertEqual(
-            QubitArray.from_bits(0, 1).tensor_product(QubitArray.from_bits(1, 0)),
-            QubitArray.from_bits(0, 1, 1, 0)
+            QubitArray.from_bits((0, 1)).tensor_product(QubitArray.from_bits((1, 0))),
+            QubitArray.from_bits((0, 1, 1, 0))
         )
         self.assertEqual(
-            QubitArray.from_bits(0, 1).tensor_product(QubitArray.from_bits(1, 0, 0)).n,
+            QubitArray.from_bits((0, 1)).tensor_product(QubitArray.from_bits((1, 0, 0))).n,
             5
         )
 
     def test_n(self):
-        self.assertEqual(QubitArray.from_bits(0, 1, 0).n, 3)
+        self.assertEqual(QubitArray.from_bits((0, 1, 0)).n, 3)
         self.assertEqual(QubitArray([0, 1, 0, 0]).n, 2)
 

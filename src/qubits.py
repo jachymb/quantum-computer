@@ -1,5 +1,5 @@
 import functools
-from typing import Self, Any
+from typing import Self, Any, Iterable
 import numpy as np
 import numpy.typing as npt
 
@@ -76,14 +76,15 @@ class QubitArray:
         return cls((0, 1), False) if bit else cls((1, 0), False)
 
     @classmethod
-    def from_bits(cls, *bits: Any) -> Self:
+    def from_bits(cls, bits: Iterable[any]) -> Self:
         """
         Construct a qubit array from an array of classical bits.
         The bits are interpreted as booleans, but can be any type.
         """
         return cls.from_tensor_product(*map(cls.from_bit, bits))
 
-    def born_rule(self):
+    def measure(self):
+        """Use the Born rule to obtain probabilities."""
         return np.abs(self._vector_representation) ** 2
 
     def __eq__(self, other: Self) -> bool:
@@ -92,7 +93,7 @@ class QubitArray:
 
 ket0 = QubitArray.from_bit(0)
 ket1 = QubitArray.from_bit(1)
-ket00 = QubitArray.from_bits(0, 0)
-ket01 = QubitArray.from_bits(0, 1)
-ket10 = QubitArray.from_bits(1, 0)
-ket11 = QubitArray.from_bits(1, 1)
+ket00 = QubitArray.from_bits((0, 0))
+ket01 = QubitArray.from_bits((0, 1))
+ket10 = QubitArray.from_bits((1, 0))
+ket11 = QubitArray.from_bits((1, 1))

@@ -14,24 +14,24 @@ I guess it could be used for educational purposes, idk?
 ```python
 from gates import BooleanReversibleGate, Circuit, HadamardGate, TensorProductGate, IdentityGate
 from qubits import QubitArray
-from typing import Callable
+from typing import Callable, Collection
 
 
 class DeutschOracle(BooleanReversibleGate):
-    def __init__(self, f: Callable[[bool], bool]):
+    def __init__(self, f):
         super().__init__(2, lambda x: (x[0], x[1] ^ f(x[0])))
 
 
-def deutsh_algorithm(f):
+def deutsh_algorithm(f) -> Collection[float]:
     circuit = Circuit(  # lazy declaration
         HadamardGate(2),
         DeutschOracle(f),
         TensorProductGate(HadamardGate(1), IdentityGate(1))
     )
-    input_qubits = QubitArray.from_bits(0, 1)
+    input_qubits = QubitArray.from_bits([0, 1])
 
     final_pure_state = circuit(input_qubits)  # Actual emulation happens here
-    return final_pure_state.born_rule()  # Get probabilities of observations
+    return final_pure_state.measure()  # Get probabilities of observations using Born rule
 
 
 if __name__ == "__main__":
@@ -44,9 +44,10 @@ if __name__ == "__main__":
 will differentiate the balanced and the constant boolean functions.
 
 ```
-
 [0.5, 0.5,    0,   0]
 [0.5, 0.5,    0,   0]
 [  0,   0,  0.5, 0.5]
 [  0,   0,  0.5, 0.5]
 ```
+These probabilities correspond to the observations of $|00\rangle |01\rangle |10\rangle |11\rangle$ respectively. 
+Only the first bit is relevant. 

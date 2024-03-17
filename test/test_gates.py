@@ -59,11 +59,11 @@ class TestQubit(unittest.TestCase):
         )
 
     def test_call(self):
-        q = QubitArray.from_bits(0, 1)
+        q = QubitArray.from_bits((0, 1))
         g = TensorProductGate(IdentityGate(1), PauliX())
         self.assertEqual(
             g(q),
-            QubitArray.from_bits(0, 0)
+            QubitArray.from_bits((0, 0))
         )
 
     def test_controlled_gate(self):

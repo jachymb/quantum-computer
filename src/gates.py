@@ -130,9 +130,9 @@ class ControlledGate(QuantumGate):
             IdentityGate(self._size - self._at_qubit - 1)
         ).matrix_representation()  # the same gate but uncontrolled. Precomputed for efficiency
         return np.array([
-                m @ QubitArray.from_bits(*a).vector_representation
+                m @ QubitArray.from_bits(a).vector_representation
                 if a[self._controlled_by] else
-                QubitArray.from_bits(*a).vector_representation
+                QubitArray.from_bits(a).vector_representation
                 for i, a in enumerate(bits.all_values(self._size))
         ])
 
