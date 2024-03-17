@@ -1,7 +1,7 @@
 This is a simple implementation of quantum circuitry emulation framework.
 
 Have you ever wondered whether the black-box boolean function $f: \lbrace 0,1\rbrace  \to \lbrace 0, 1\rbrace$ is constant and needed to compute the answer really quickly using a quantum computer,
-but actually very slowly because of emulation!? The infamously pointless Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem while looking at $f$ only once!
+but actually very slowly because of emulation!? The infamously pointless Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem while evaluating $f$ only once!
 
 This framework is kind of similar to QisKit but less powerful, so if you want to do something serious with quantum computation use QisKit instead. I wanted to try to implement this myself as a hobby project and I didn't inspect QisKit sources and only learned about it when I was finishing this.
 
