@@ -121,3 +121,8 @@ class TestQubit(unittest.TestCase):
         swap_gate2 = Circuit(half_swap, half_swap)
         self.assertEqual(swap_gate1, swap_gate2)
 
+    def test_pauli(self):
+        np.testing.assert_array_almost_equal(
+            PauliZ().matrix_representation(),
+            PhaseShiftGate(np.pi).matrix_representation()
+        )

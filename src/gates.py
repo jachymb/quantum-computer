@@ -183,7 +183,7 @@ class PauliY(Oracle):
 
 
 class PauliZ(Oracle):
-    """1-qubit Pauli Z gate."""
+    """1-qubit Pauli Z gate. This is the same as PhaseShiftGate(np.pi)"""
     def __init__(self):
         super().__init__([
             [1, 0],
