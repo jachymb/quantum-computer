@@ -157,7 +157,7 @@ class ControlledGate(QuantumGate):
         if not 0 <= controlled_by < self._size:
             raise ValueError("Invalid number of control qubit.")
 
-        if controlled_by == at_qubit:
+        if controlled_by >= at_qubit > controlled_by + base_gate.size:
             raise ValueError("Base gate cannot be at the same position as control qubit.")
 
     def matrix_representation(self) -> np.ndarray:

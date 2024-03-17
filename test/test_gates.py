@@ -44,8 +44,9 @@ class TestQubit(unittest.TestCase):
                 [1, 0]
             ])
         )
+        swap_gate = BooleanReversibleGate(lambda x, y: (y, x))
         np.testing.assert_array_equal(
-            BooleanReversibleGate(lambda x, y: (y, x)).matrix_representation(),
+            swap_gate.matrix_representation(),
             np.array([
                 [1, 0, 0, 0],
                 [0, 0, 1, 0],
@@ -99,4 +100,12 @@ class TestQubit(unittest.TestCase):
                 [0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 1, 0]
             ])
+        )
+
+    def test_circuit(self):
+        sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-np.pi / 2), HadamardGate(1))
+        x = Circuit(sqrt_not, sqrt_not)
+        np.testing.assert_array_almost_equal(
+            x.matrix_representation(),
+            PauliX().matrix_representation()
         )
