@@ -1,6 +1,6 @@
 import unittest
 from deutsh import *
-
+import numpy as np
 
 class TestDeutsch(unittest.TestCase):
     def test_deutsch(self):

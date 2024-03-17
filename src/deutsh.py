@@ -9,7 +9,7 @@ from qubits import QubitArray
 
 class DeutschOracle(BooleanReversibleGate):
     def __init__(self, f: Callable[[bool], bool]):
-        super().__init__(2, lambda x: (x[0], x[1] ^ f(x[0])))
+        super().__init__(lambda x, y: (x, y ^ f(x)))
 
 
 def deutsh_algorithm(f) -> Collection[float]:
@@ -18,4 +18,4 @@ def deutsh_algorithm(f) -> Collection[float]:
         DeutschOracle(f),
         TensorProductGate(HadamardGate(1), IdentityGate(1))
     )
-    return c(QubitArray.from_bits(0, 1)).measure()
+    return c(QubitArray.from_bits((0, 1))).measure()

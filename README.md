@@ -52,4 +52,15 @@ The quantum algorithm will differentiate the balanced and the constant boolean f
 These probabilities correspond to the observations of $|00\rangle, |01\rangle, |10\rangle$ and $|11\rangle$ respectively. 
 Only the first bit is relevant. 
 
+The gates API should be flexible enough to build various gates from the primitives:
+```python
+from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, PhaseShiftGate 
+from math import pi
+
+cnot = ControlledGate(2, PauliX(), at_qubit=1, controlled_by=0)
+toffoli = ControlledGate(3, cnot, at_qubit=1, controlled_by=0)
+swap = BooleanReversibleGate(lambda x, y: (y, x))
+sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-pi/2), HadamardGate(1))
+```
+
 ![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)

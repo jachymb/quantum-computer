@@ -34,18 +34,27 @@ class TestQubit(unittest.TestCase):
 
     def test_boolean_reversible(self):
         self.assertEqual(
-            BooleanReversibleGate(1, lambda x: x),
+            BooleanReversibleGate(lambda x: (x,)),
             IdentityGate(1)
         )
         np.testing.assert_array_equal(
-            BooleanReversibleGate(1, lambda x: [not x[0]]).matrix_representation(),
+            BooleanReversibleGate(lambda x: [not x]).matrix_representation(),
             np.array([
                 [0, 1],
                 [1, 0]
             ])
         )
+        np.testing.assert_array_equal(
+            BooleanReversibleGate(lambda x, y: (y, x)).matrix_representation(),
+            np.array([
+                [1, 0, 0, 0],
+                [0, 0, 1, 0],
+                [0, 1, 0, 0],
+                [0, 0, 0, 1]
+            ])
+        )
         with self.assertRaises(ValueError):
-            BooleanReversibleGate(1, lambda x: [False])
+            BooleanReversibleGate(lambda x: [False])
 
     def test_tensor_product_gate(self):
         np.testing.assert_array_equal(
@@ -75,5 +84,19 @@ class TestQubit(unittest.TestCase):
                 [0, 1, 0, 0],
                 [0, 0, 0, 1],
                 [0, 0, 1, 0]
+            ])
+        )
+        toffoli = ControlledGate(3, cnot, 1, 0)
+        np.testing.assert_array_equal(
+            toffoli.matrix_representation(),
+            np.array([
+                [1, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 1, 0]
             ])
         )

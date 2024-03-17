@@ -1,5 +1,4 @@
 import functools
-import operator
 from abc import ABC, abstractmethod
 from typing import Callable, Collection, Self
 
@@ -16,6 +15,7 @@ class QuantumGate(ABC):
     """
     Base class for various gates.
     """
+
     def __init__(self, size: int):
         self._size = size
 
@@ -59,6 +59,7 @@ class TensorProductGate(QuantumGate):
 
 class PauliX(QuantumGate):
     """1-qubit Pauli X gate, a.k.a. the NOT gate."""
+
     def __init__(self):
         super().__init__(1)
 
@@ -69,7 +70,47 @@ class PauliX(QuantumGate):
         ], dtype=_complex)
 
 
+class PauliY(QuantumGate):
+    """1-qubit Pauli Y."""
+
+    def __init__(self):
+        super().__init__(1)
+
+    def matrix_representation(self) -> np.ndarray:
+        return np.array([
+            [0, -1j],
+            [1j, 0]
+        ], dtype=_complex)
+
+
+class PauliZ(QuantumGate):
+    """1-qubit Pauli Z gate."""
+
+    def __init__(self):
+        super().__init__(1)
+
+    def matrix_representation(self) -> np.ndarray:
+        return np.array([
+            [1, 0],
+            [0, -1]
+        ], dtype=_complex)
+
+
+class PhaseShiftGate(QuantumGate):
+    def __init__(self, phase):
+        super().__init__(1)
+        self._phase = phase
+
+    def matrix_representation(self) -> np.ndarray:
+        return np.array([
+            [1, 0],
+            [0, np.exp(1j*self._phase)]
+        ], dtype=_complex)
+
+
 class HadamardGate(QuantumGate):
+    """The Hadamard gate applied to each of n qubits."""
+
     def matrix_representation(self) -> np.ndarray:
         normalization = 2 ** (self._size / 2)
         return scipy.linalg.hadamard(2 ** self._size, dtype=_complex) / normalization
@@ -81,13 +122,12 @@ class BooleanReversibleGate(QuantumGate):
     The function must be a permutation (a.k.a. reversible).
     """
 
-    def __init__(self, size: int, f: Callable[[Collection[bool]], Collection[bool]], validate=True):
+    def __init__(self, f: Callable[[bool, ...], Collection[bool]], validate=True):
         """
-        :param size: The number of input/output bits of the boolean function.
         :param f: The boolean function.
         :param validate: Whether to check if it's a permutation. Raises a ValueError if it's not a permutation.
         """
-        super().__init__(size)
+        super().__init__(f.__code__.co_argcount)
         self.f = f
         if validate:
             self._validate()
@@ -96,7 +136,7 @@ class BooleanReversibleGate(QuantumGate):
         n = 2 ** self._size
         m = np.zeros((n, n), dtype=_complex)
         for i, a in enumerate(bits.all_values(self._size)):
-            m[i, bits.to_int_big_endian(self.f(a))] = 1
+            m[i, bits.to_int_big_endian(self.f(*a))] = 1
         return m
 
     def _validate(self):
@@ -111,29 +151,27 @@ class ControlledGate(QuantumGate):
         self._at_qubit = at_qubit
         self._controlled_by = controlled_by
 
-        if base_gate.size != 1:
-            raise NotImplementedError("Only single qubit controlled gates are supported.")
-
-        elif not 0 <= controlled_by < self._size:
+        if not 0 <= controlled_by < self._size:
             raise ValueError("Invalid base gate qubit.")
 
-        elif not 0 <= controlled_by < self._size:
+        if not 0 <= controlled_by < self._size:
             raise ValueError("Invalid number of control qubit.")
 
-        elif controlled_by == at_qubit:
+        if controlled_by == at_qubit:
             raise ValueError("Base gate cannot be at the same position as control qubit.")
 
     def matrix_representation(self) -> np.ndarray:
+        # This is probably not the most efficient construction, but it has nice flexibility with the arbitrary at_qubit
         m = TensorProductGate(
             IdentityGate(self._at_qubit),
             self._base_gate,
-            IdentityGate(self._size - self._at_qubit - 1)
+            IdentityGate(self._size - self._at_qubit - self._base_gate.size)
         ).matrix_representation()  # the same gate but uncontrolled. Precomputed for efficiency
         return np.array([
-                m @ QubitArray.from_bits(a).vector_representation
-                if a[self._controlled_by] else
-                QubitArray.from_bits(a).vector_representation
-                for i, a in enumerate(bits.all_values(self._size))
+            m @ QubitArray.from_bits(a).vector_representation
+            if a[self._controlled_by] else
+            QubitArray.from_bits(a).vector_representation
+            for i, a in enumerate(bits.all_values(self._size))
         ])
 
 
@@ -166,6 +204,8 @@ class Oracle(QuantumGate):
 
 
 class Circuit(QuantumGate):
+    """Serial execution of a sequence of gates. They must have the same size."""
+
     def __init__(self, *gates: QuantumGate):
         size = gates[0].size
         if any(g.size != size for g in gates):
@@ -175,4 +215,4 @@ class Circuit(QuantumGate):
 
     def matrix_representation(self) -> np.ndarray:
         matrices = (g.matrix_representation() for g in reversed(self.gates))
-        return functools.reduce(operator.matmul, matrices)
+        return functools.reduce(np.dot, matrices)
