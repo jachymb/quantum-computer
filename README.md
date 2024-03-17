@@ -12,7 +12,7 @@ Cool video explaing the homemade hardware implementation for this: https://www.y
 I guess it could be used for educational purposes, idk?
 
 ```python
-from gates import BooleanReversibleGate, Circuit, HadamardGate, TensorProductGate, IdentityGate
+from gates import BooleanReversibleGate, HadamardGate, TensorProductGate, IdentityGate, Circuit
 from qubits import QubitArray
 from typing import Callable, Collection
 
@@ -35,10 +35,10 @@ def deutsh_algorithm(f: Callable[[bool], bool]) -> Collection[float]:
 
 
 if __name__ == "__main__":
-    print(deutsh_algorithm(lambda x: False))
-    print(deutsh_algorithm(lambda x: True))
-    print(deutsh_algorithm(lambda x: x))
-    print(deutsh_algorithm(lambda x: not x))
+    print(deutsh_algorithm(lambda x: False))  # constant
+    print(deutsh_algorithm(lambda x: True))   # constant
+    print(deutsh_algorithm(lambda x: x))      # balanced
+    print(deutsh_algorithm(lambda x: not x))  # balanced
 ```
 
 The quantum algorithm will differentiate the balanced and the constant boolean functions using a single pass, something that is impossible on a classical computer.
@@ -51,3 +51,5 @@ The quantum algorithm will differentiate the balanced and the constant boolean f
 ```
 These probabilities correspond to the observations of $|00\rangle, |01\rangle, |10\rangle$ and $|11\rangle$ respectively. 
 Only the first bit is relevant. 
+
+![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
