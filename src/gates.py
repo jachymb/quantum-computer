@@ -57,45 +57,6 @@ class TensorProductGate(QuantumGate):
         return functools.reduce(np.kron, matrices, empty)
 
 
-class PauliX(QuantumGate):
-    """1-qubit Pauli X gate, a.k.a. the NOT gate."""
-
-    def __init__(self):
-        super().__init__(1)
-
-    def matrix_representation(self) -> np.ndarray:
-        return np.array([
-            [0, 1],
-            [1, 0]
-        ], dtype=_complex)
-
-
-class PauliY(QuantumGate):
-    """1-qubit Pauli Y."""
-
-    def __init__(self):
-        super().__init__(1)
-
-    def matrix_representation(self) -> np.ndarray:
-        return np.array([
-            [0, -1j],
-            [1j, 0]
-        ], dtype=_complex)
-
-
-class PauliZ(QuantumGate):
-    """1-qubit Pauli Z gate."""
-
-    def __init__(self):
-        super().__init__(1)
-
-    def matrix_representation(self) -> np.ndarray:
-        return np.array([
-            [1, 0],
-            [0, -1]
-        ], dtype=_complex)
-
-
 class PhaseShiftGate(QuantumGate):
     def __init__(self, phase):
         super().__init__(1)
@@ -201,6 +162,33 @@ class Oracle(QuantumGate):
 
     def matrix_representation(self) -> np.ndarray:
         return self._matrix
+
+
+class PauliX(Oracle):
+    """1-qubit Pauli X gate, a.k.a. the NOT gate."""
+    def __init__(self):
+        super().__init__([
+            [0, 1],
+            [1, 0]
+        ])
+
+
+class PauliY(Oracle):
+    """1-qubit Pauli Y."""
+    def __init__(self):
+        super().__init__([
+            [0, -1j],
+            [1j, 0]
+        ])
+
+
+class PauliZ(Oracle):
+    """1-qubit Pauli Z gate."""
+    def __init__(self):
+        super().__init__([
+            [1, 0],
+            [0, -1]
+        ])
 
 
 class Circuit(QuantumGate):
