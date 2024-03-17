@@ -7,7 +7,7 @@ This framework is kind of similar to QisKit but less powerful, so if you want to
 
 The code is designed as a re-usable and extensible OOP/lazy-evaluation library.
 
-I guess it could be used for educational purposes, idk?
+I guess it could be used for educational purposes, or something?
 
 The Deutsch-Jozsa quantum circuit:
 ![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
