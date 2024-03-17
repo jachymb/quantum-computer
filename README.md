@@ -58,7 +58,8 @@ Cool video explaing the homemade hardware implementation for this: https://www.y
 
 The gates API should be flexible enough to build various gates from the primitives. For example:
 ```python
-from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, PhaseShiftGate, Oracle 
+from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, \
+    PhaseShiftGate, Oracle 
 from math import pi
 
 cnot = ControlledGate(2, PauliX(), at_qubit=1, controlled_by=0)
