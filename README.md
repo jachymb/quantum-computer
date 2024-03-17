@@ -1,18 +1,18 @@
 This is a simple implementation of quantum circuitry emulation framework.
 
 Have you ever wondered whether the black-box boolean function $f: \lbrace 0,1\rbrace  \to \lbrace 0, 1\rbrace$ is constant and needed to compute the answer really quickly using a quantum computer,
-but actually very slowly because of emulation!? The infamously useless Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem!
+but actually very slowly because of emulation!? The infamously pointless Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem while evaluating $f$ only once (on a certain superposition of 0 and 1)!
 
 This framework is kind of similar to QisKit but less powerful, so if you want to do something serious with quantum computation use QisKit instead. I wanted to try to implement this myself as a hobby project and I didn't inspect QisKit sources and only learned about it when I was finishing this.
 
 The code is designed as a re-usable and extensible OOP/lazy-evaluation library.
 
-I guess it could be used for educational purposes, idk?
+I guess it could be used for educational purposes, or something?
 
 The Deutsch-Jozsa quantum circuit:
 ![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
 
-That can be implemented (here for simplicity $n=1$ but can be easily generalized) as the following code: 
+That can be implemented (here for simplicity $n=1$ but can be easily generalized) using the following code: 
 ```python
 from gates import BooleanReversibleGate, HadamardGate, TensorProductGate, IdentityGate, Circuit
 from qubits import QubitArray
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print(deutsh_algorithm(lambda x: not x))  # balanced
 ```
 
-The quantum algorithm will differentiate the balanced and the constant boolean functions using a single pass, something that is impossible on a classical computer.
+The quantum algorithm will differentiate the balanced and the constant boolean functions using a single pass, something that is impossible on a classical computer. The output from the block above is:
 
 ```
 [0.5, 0.5,    0,   0]
@@ -60,12 +60,12 @@ The gates API should be flexible enough to build various gates from the primitiv
 ```python
 from gates import Circuit, HadamardGate, ControlledGate, PauliX, BooleanReversibleGate, \
     PhaseShiftGate, Oracle 
-from math import pi
+from math import pi as π
 
 cnot = ControlledGate(2, PauliX(), at_qubit=1, controlled_by=0)
 toffoli = ControlledGate(3, cnot, at_qubit=1, controlled_by=0)
 swap = BooleanReversibleGate(lambda x, y: (y, x))
-sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-pi/2), HadamardGate(1))
+sqrt_not = Circuit(HadamardGate(1), PhaseShiftGate(-π/2), HadamardGate(1))
 sqrt_swap = Oracle([
     [1, 0,        0,        0],
     [0, 0.5+0.5j, 0.5-0.5j, 0],
