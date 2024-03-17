@@ -1,13 +1,11 @@
 This is a simple implementation of quantum circuitry emulation framework.
 
-It is kind of similar to QisKit but less powerful, so if you want to do something serious with quantum computation use QisKit instead. I wanted to try to implement this myself as a hobby project and I didn't inspect QisKit sources and only learned about it when I was finishing this.
-
-The code is designed as a re-usable and extensible OOP/lazy-evaluation library.
-
-But have you ever wondered whether the black-box boolean function $f: \lbrace 0,1\rbrace  \to \lbrace 0, 1\rbrace$ is constant and needed to compute the answer really quickly using a quantum computer,
+Have you ever wondered whether the black-box boolean function $f: \lbrace 0,1\rbrace  \to \lbrace 0, 1\rbrace$ is constant and needed to compute the answer really quickly using a quantum computer,
 but actually very slowly because of emulation!? The famous Deutsch-Jozsa algorithm is implemented using this framework for you to solve this problem.
 
-Cool video explaing the homemade hardware implementation for this: https://www.youtube.com/watch?v=tHfGucHtLqo
+This framework is kind of similar to QisKit but less powerful, so if you want to do something serious with quantum computation use QisKit instead. I wanted to try to implement this myself as a hobby project and I didn't inspect QisKit sources and only learned about it when I was finishing this.
+
+The code is designed as a re-usable and extensible OOP/lazy-evaluation library.
 
 I guess it could be used for educational purposes, idk?
 
@@ -55,6 +53,8 @@ The quantum algorithm will differentiate the balanced and the constant boolean f
 ```
 These probabilities correspond to the observations of $|00\rangle, |01\rangle, |10\rangle$ and $|11\rangle$ respectively. 
 Only the first bit is relevant. 
+
+Cool video explaing the homemade hardware implementation for this: https://www.youtube.com/watch?v=tHfGucHtLqo
 
 The gates API should be flexible enough to build various gates from the primitives:
 ```python
