@@ -12,7 +12,7 @@ I guess it could be used for educational purposes, or something?
 The Deutsch-Jozsa quantum circuit:
 ![Circuit diagram](https://upload.wikimedia.org/wikipedia/commons/b/b5/Deutsch-Jozsa-algorithm-quantum-circuit.png)
 
-That can be implemented (here for simplicity $n=1$ but can be easily generalized) as the following code: 
+That can be implemented (here for simplicity $n=1$ but can be easily generalized) using the following code: 
 ```python
 from gates import BooleanReversibleGate, HadamardGate, TensorProductGate, IdentityGate, Circuit
 from qubits import QubitArray
